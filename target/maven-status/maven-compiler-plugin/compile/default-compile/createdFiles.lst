@@ -1,0 +1,7 @@
+com\spring\mail\sender\controller\MailController.class
+com\spring\mail\sender\service\EmailServiceImpl.class
+com\spring\mail\sender\service\IEmailService.class
+com\spring\mail\sender\domain\EmailDTO.class
+com\spring\mail\sender\domain\EmailFileDTO.class
+com\spring\mail\sender\GOlivaMailSenderApplication.class
+com\spring\mail\sender\config\MailConfiguration.class
