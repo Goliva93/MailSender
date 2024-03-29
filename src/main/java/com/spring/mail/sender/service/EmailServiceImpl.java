@@ -3,6 +3,7 @@ package com.spring.mail.sender.service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -16,12 +17,14 @@ public class EmailServiceImpl implements IEmailService {
 
     @Autowired
     private JavaMailSender mailSender;
+    @Value("${user.email.user}")
+    private String toFrom;
     @Override
     public void sendEmail(String toUser, String subject, String message) {
 
         try{
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom("goliva@hiper.com.pe");
+        mailMessage.setFrom(toFrom);
         mailMessage.setTo(toUser);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
@@ -30,8 +33,6 @@ public class EmailServiceImpl implements IEmailService {
             System.out.println("Hay un error" + e.getMessage());
             e.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -40,7 +41,7 @@ public class EmailServiceImpl implements IEmailService {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true, StandardCharsets.UTF_8.name());
-            mimeMessageHelper.setFrom("goliva@hiper.com.pe");
+            mimeMessageHelper.setFrom(toFrom);
             mimeMessageHelper.setTo(toUser);
             mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.setText(message);

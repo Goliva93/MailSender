@@ -17,11 +17,11 @@ public class MailController {
 
     @GetMapping("/sendMessage")
     public ResponseEntity<?> reciveRequestEmail(){
-
+/*
         System.out.println("armando el mensaje");
         emailService.sendEmail("giomar.oliva.93@gmail.com","Primer Correo","asd");
         System.out.println("Correo enviado");
-
+*/
         return ResponseEntity.ok().build();
 
     }
