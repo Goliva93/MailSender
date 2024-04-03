@@ -3,8 +3,10 @@ import java.io.File;
 
 public interface IEmailService {
 
-    void sendEmail(String toUser, String subject,String message);
+    int sendEmail(String toUser, String subject,String message);
 
-    void sendEmailWithFile(String toUser, String subject, String message, File file);
+    int sendEmailWithFile(String toUser, String subject, String message, File file);
+
+    int sendEmailWithFile2(String toUser, String subject, String message, File file1,File file2);
 
 }

@@ -24,12 +24,15 @@ public class ManipulationCsvImpl implements IManipulationCsv {
             String line;
 
             while ((line = reader.readLine()) != null) {
+
                 String[] parts = line.split(",");
                 EmailDTO email = new EmailDTO();
-                if(parts[0].trim().equals("num")){
+
+                if(parts[0].trim().equals("nameFile1")){
                     continue;
                 }
-                email.setNumber(parts[0].trim());
+
+                email.setNameFile1(parts[0].trim());
                 email.setName(parts[1].trim());
                 email.setToEmail(parts[2].trim());
                 emails.add(email);
@@ -39,7 +42,28 @@ public class ManipulationCsvImpl implements IManipulationCsv {
         } catch (IOException e) {
             System.out.println("hay un error " + e.getMessage());
         }
-
         return emails;
     }
+
+    @Override
+    public void writeResult(String ruta, List<String> message, int flag) {
+
+        try {
+            File f = new File(ruta);
+            FileWriter fw = new FileWriter(f);
+            if(flag == 1){
+                fw.write("No se enviaron correos a los siguientes colaboradores \n");
+            }
+            for(String m : message) {
+                fw.write(m + " \n");
+            }
+
+            fw.close();
+
+        } catch(Exception e) {
+            System.out.println(" ocurrio un error mi chamo, mira tu codigo :v. - escribirArchivo -" + e.getMessage().toString());
+        }
+
+    }
+
 }

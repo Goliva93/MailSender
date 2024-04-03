@@ -1,5 +1,7 @@
 D:\Ange\MailSender\src\main\java\com\spring\mail\sender\domain\EmailFileDTO.java
+D:\Ange\MailSender\src\main\java\com\spring\mail\sender\service\ManipulationCsvImpl.java
 D:\Ange\MailSender\src\main\java\com\spring\mail\sender\service\EmailServiceImpl.java
+D:\Ange\MailSender\src\main\java\com\spring\mail\sender\service\IManipulationCsv.java
 D:\Ange\MailSender\src\main\java\com\spring\mail\sender\controller\MailController.java
 D:\Ange\MailSender\src\main\java\com\spring\mail\sender\domain\EmailDTO.java
 D:\Ange\MailSender\src\main\java\com\spring\mail\sender\GOlivaMailSenderApplication.java

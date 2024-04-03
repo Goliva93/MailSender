@@ -11,17 +11,18 @@ import lombok.Setter;
 @AllArgsConstructor
 
 public class EmailDTO {
-    private String number;
+    private String nameFile1;
+    private String nameFile2;
     private String name;
     private String toEmail;
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("EmailDTO{");
-        sb.append("number='").append(number).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", toEmail='").append(toEmail).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "EmailDTO{" +
+                "nameFile1='" + nameFile1 + '\'' +
+                ", nameFile2='" + nameFile2 + '\'' +
+                ", name='" + name + '\'' +
+                ", toEmail='" + toEmail + '\'' +
+                '}';
     }
 }

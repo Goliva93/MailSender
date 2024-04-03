@@ -8,19 +8,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Iterator;
-import java.util.stream.Collectors;
+
 
 @SpringBootApplication
 public class GOlivaMailSenderApplication implements CommandLineRunner {
@@ -45,19 +40,33 @@ public class GOlivaMailSenderApplication implements CommandLineRunner {
 	@Value("${user.param.reason}")
 	private String subject;
 
+	@Value("${user.param.numberFiles}")
+	private int numberFiles;
+
+
+
 	@Override
 	public void run(String... args) throws Exception {
 		String rutaCsv = rutaGeneral + nombreCsv;
+		List<String> result;
 
 		List<EmailDTO> employees = manipulationCsv.listOfEmployees(rutaCsv);
 
 		forcito(employees);
 
-		// Para envio individual
-		//envioEmail(employees);
+		if(numberFiles == 1){
+			System.out.println("se va enviar correos con 1 archivo adjunto");
+			result = envioEmailPDF(employees);
 
-		envioEmailPDF(employees);
-
+			if(result.isEmpty()){
+				result.add("Se enviaron todos los correos satisfactoriamente");
+				manipulationCsv.writeResult(rutaGeneral+"Resultado.txt",result,0);
+			}else{
+				manipulationCsv.writeResult(rutaGeneral+"Resultado.txt",result,1);
+			}
+		} else if (numberFiles == 2){
+			System.out.println("se va enviar correos con 2 archivo adjunto");
+		}
 		System.out.println("Programa terminado");
 
 	}
@@ -82,28 +91,50 @@ public class GOlivaMailSenderApplication implements CommandLineRunner {
 		System.out.println("Los empleados a quienes se enviara el correo son: ");
 		x.forEach(System.out::println);
 	}
-	public void envioEmail(List<EmailDTO> x){
+
+	public List<String> envioEmail(List<EmailDTO> x){
+		List<String> nombres = new ArrayList<>();
+		int cant = 0;
+		/*
 		x.forEach(y ->
 				emailService.sendEmail(y.getToEmail(),subject+mes,emailMessage(y.getName(),mes)));
-		}
+		*/
+		x.forEach(ed -> {
+			int value = emailService.sendEmail(ed.getToEmail(),
+					subject + mes,
+					emailMessage(ed.getName(), mes));
+			if (value == 0){
+				nombres.add(ed.getName());
+			}
+		});
+		return nombres;
+	}
 
-	public void envioEmailPDF(List<EmailDTO> x){
+	public List<String> envioEmailPDF(List<EmailDTO> x){
+
+		List<String> nombres = new ArrayList<>();
 		try {
 
-			for (EmailDTO y : x) {
-				String fileName = y.getNumber() + ".pdf";
+			x.forEach(ed ->{
+				String fileName = ed.getNameFile1() + ".pdf";
 				Path path = Paths.get(rutaGeneral + fileName);
 				File file = path.toFile();
-
-				emailService.sendEmailWithFile(
-					y.getToEmail(),
-					subject + mes,
-					emailMessage(y.getName(), mes),
-					file);
+				int value = emailService.sendEmailWithFile(
+						ed.getToEmail(),
+						subject + mes,
+						emailMessage(ed.getName(), mes),
+						file);
+				if (value == 0){
+					nombres.add(ed.getName());
 				}
-			}catch (Exception e){
-				throw new RuntimeException("Error al enviar el Email con el archivo. " + e.getMessage());
-			}
+			});
+
+			return nombres;
+		} catch (Exception e) {
+			e.printStackTrace();
+			//throw new RuntimeException("Error al enviar el Email con el archivo. " + e.getMessage());
+			return nombres;
+		}
 
 	}
 }
