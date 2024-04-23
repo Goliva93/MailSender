@@ -61,7 +61,7 @@ public class GOlivaMailSenderApplication implements CommandLineRunner {
 			if(result.isEmpty()){
 				result.add("Se enviaron todos los correos satisfactoriamente");
 				manipulationCsv.writeResult(rutaGeneral+"Resultado.txt",result,0);
-			}else{
+			} else {
 				manipulationCsv.writeResult(rutaGeneral+"Resultado.txt",result,1);
 			}
 		} else if (numberFiles == 2){
